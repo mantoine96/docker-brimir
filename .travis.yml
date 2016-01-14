@@ -1,0 +1,17 @@
+sudo: required
+
+language: ruby
+
+services:
+    - docker
+
+before_install:
+    - docker build -t thehunt33r/docker-brimir .
+    - docker run -d -p 80:3000 thehunt33r/docker-brimir
+    - docker ps -a
+    - docker run thehunt33r/docker-brimir /bin/sh -c "psql -C 'CREATE DATABASE brimir_test;' -U postgres"
+    - docker run thehunt33r/docker-brimir /bin/sh -c "cp config/database.travis.yml config/database.yml"
+    - docker run thehunt33r/docker-brimir /bin/sh -c "bundle exec rake db:migrate"
+
+script:
+    - bundle exec rake db:migrate

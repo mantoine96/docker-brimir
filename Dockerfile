@@ -18,7 +18,7 @@ RUN /bin/bash generate-database.sh /opt/brimir
 EXPOSE 3000
 RUN /etc/init.d/postgresql start
 RUN sed -i "s/<%= ENV\[\"SECRET_KEY_BASE\"\] %>/`bin/rake secret`/g" /opt/brimir/config/secrets.yml
-RUN /etc/init.d/postgresql start && bin/rake db:schema:load RAILS_ENV=production
+RUN /etc/init.d/postgresql start && sleep 10 && bin/rake db:schema:load RAILS_ENV=production
 RUN bin/rake assets:precompile RAILS_ENV=production
 ADD loadUser.rb /opt/brimir/loadUser.rb
 RUN /etc/init.d/postgresql start && bin/rails console production < loadUser.rb
