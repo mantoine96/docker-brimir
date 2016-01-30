@@ -9,6 +9,6 @@ before_script:
     - docker build -t thehunt33r/docker-brimir .
     - docker run -d -p 80:3000 thehunt33r/docker-brimir
     - docker ps -a
-    - docker run thehunt33r/docker-brimir /bin/sh -c "su - postgres - c 'psql -c 'CREATE DATABASE brimir_test;'"
+    - docker run thehunt33r/docker-brimir /bin/sh -c "/etc/init.d/postgresql start && su - postgres -c 'createdb brimir_test;'"
     - docker run thehunt33r/docker-brimir /bin/sh -c "cp config/database.travis.yml config/database.yml"
     - docker run thehunt33r/docker-brimir /bin/sh -c "bundle exec rake db:migrate"
